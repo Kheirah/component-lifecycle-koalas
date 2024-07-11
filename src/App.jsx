@@ -37,7 +37,7 @@ function App() {
   useEffect(() => {
     const interval = setInterval(() => {
       if (progress < 100) {
-        setProgress((prev) => prev + 10)
+        setProgress((previousProgress) => previousProgress + 10)
       } else {
         clearInterval(interval);
       }
