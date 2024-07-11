@@ -6,16 +6,17 @@ import './App.css'
 const API = "https://openlibrary.org/search/authors.json?q=suzanne%20collins";
 
 function App() {
+  const [progress, setProgress] = useState(0)
   const [author, setAuthor] = useState(undefined);
 
   /* 
-    run the callback function
+    useEffect runs the callback function
     - on mounting the component
     - on updating the component
     - on unmounting the component
-  */
-
-    /* question: when does useEffect get executed? */
+  
+   question: when does useEffect get executed initially?
+   answer: AFTER rendering the component */
   useEffect(() => {
 
     async function loadData() {
@@ -31,8 +32,21 @@ function App() {
       /* clean up stuff */
     }
 
-  }, [author])
+  }, [])
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (progress < 100) {
+        setProgress((prev) => prev + 10)
+      } else {
+        clearInterval(interval);
+      }
+    }, 1000)
+
+    return () => {
+      clearInterval(interval);
+    }
+  }, [progress])
 
   return (
     <>
@@ -46,7 +60,7 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-
+        <div>Fortschritt: {progress}%</div>
         <p>
           {/* .? optional operator/chaining */}
           Gefunden: {author?.numFound}
